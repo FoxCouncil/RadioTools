@@ -53,6 +53,8 @@ function processNowPlaying() {
                 currentSongId[sData.id] = npData.id
 
                 i2b64(npData.art).then((resp) => {
+                    npData.timestamp = Math.floor(Date.now() / 1000);
+                    delete npData.art;
                     npData.art = 'data:image/jpeg;base64,' + resp;
                     delete npData.custom_fields;
                     delete npData.lyrics;
@@ -65,7 +67,6 @@ function processNowPlaying() {
                         } else {
                             console.log(stationName + ': ' + npData.text + ' [' + (Date.now() - perfStartTime).toString() + 'ms]');
                             delete npData.art;
-                            npData.timestamp = Math.floor(Date.now() / 1000);
                             sendPusher(stationCode, npData);
                         }
                     });
